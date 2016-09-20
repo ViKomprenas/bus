@@ -1,3 +1,5 @@
 fn main() {
-    let argv: Vec<String> = std::env::args().collect();
+    let argv: String = std::env::args().skip(1)
+        .fold("".to_string(), |all, item| all + " '" + &item + "'");
+    println!("{}", &argv);
 }
