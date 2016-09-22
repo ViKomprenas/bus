@@ -28,9 +28,12 @@ fn main() {
 
     let tmpfilepath = get_tmp_file();
     let mut tmpfile = OpenOptions::new().write(true).create(true).open(&tmpfilepath)
-        .unwrap_or_else(|e|error(&format!("couldn't open temp file: {} ({})", e, tmpfilepath)));
+        .unwrap_or_else(|e|error(&format!("couldn't open temp file: {} ({})", e, &tmpfilepath)));
     let mut buffer: Vec<u8> = Vec::with_capacity(8192); // Arbitrary 8KiB.
 
     stdin().read_to_end(&mut buffer);
     tmpfile.write_all(&buffer);
+
+    pagercmd.arg(tmpfilepath);
+    pagercmd.status();
 }
