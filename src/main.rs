@@ -1,6 +1,6 @@
 use std::env::args;
 use std::process::{Command, exit};
-use std::fs::OpenOptions;
+use std::fs::{OpenOptions, remove_file};
 use std::io::{stdin, Read, Write};
 
 fn error(message: &str) -> ! {
@@ -34,8 +34,14 @@ fn main() {
     stdin().read_to_end(&mut buffer);
     tmpfile.write_all(&buffer);
 
-    pagercmd.arg(tmpfilepath);
-    exit(pagercmd.status().map(|x|x.code())
-         .unwrap_or_else(|e|error(&format!("couldn't open pagercmd: {}", e)))
-         .unwrap_or_else(||error(&format!("couldn't open pagercmd"))));
+    pagercmd.arg(&tmpfilepath);
+    let c = pagercmd.status().map(|x|x.code())
+            .unwrap_or_else(|e|error(&format!("couldn't open pagercmd: {}", e)))
+            .unwrap_or_else(||error(&format!("couldn't open pagercmd")));
+
+    if let Err(e) = remove_file(tmpfilepath) {
+        error(&format!("couldn't delete file: {}", e));
+    } else {
+        exit(c);
+    }
 }
