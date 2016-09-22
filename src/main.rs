@@ -24,11 +24,6 @@ fn main() {
 
     let args = args().skip(2);
 
-    let mut pagercmd = Command::new(cmdpath);
-    for arg in args {
-        pagercmd.arg(arg);
-    }
-
     let tmpfilepath = get_tmp_file();
     let mut tmpfile = OpenOptions::new().write(true).create(true).open(&tmpfilepath)
         .unwrap_or_else(|e|error(&format!("couldn't open temp file: {} ({})", e, &tmpfilepath)));
@@ -37,7 +32,20 @@ fn main() {
     stdin().read_to_end(&mut buffer);
     tmpfile.write_all(&buffer);
 
-    pagercmd.arg(&tmpfilepath);
+    let mut did_brace = false;
+    let mut pagercmd = Command::new(cmdpath);
+    for arg in args {
+        if arg == "{}" {
+            pagercmd.arg(&tmpfilepath);
+            did_brace = true;
+        } else {
+            pagercmd.arg(arg);
+        }
+    }
+    if !did_brace {
+        pagercmd.arg(&tmpfilepath);
+    }
+
     let c = pagercmd.status().map(|x|x.code())
             .unwrap_or_else(|e|error(&format!("couldn't open pagercmd: {}", e)))
             .unwrap_or_else(||error(&format!("couldn't open pagercmd")));
