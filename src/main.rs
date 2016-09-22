@@ -16,8 +16,11 @@ fn get_tmp_file() -> String {
 }
 
 fn main() {
-    let cmdpath = args().skip(1).next()
-            .unwrap_or_else(||error("usage: bus <command> [args...]"));
+    let cmdpath = args().skip(1).next().unwrap_or_else(|| {
+                            let estr = &format!("usage: {} command [args...]\ncouldn't default to $PAGER",
+                                                args().next().unwrap());
+                            std::env::var("PAGER").unwrap_or_else(|e|error(estr))
+                      });
 
     let args = args().skip(2);
 

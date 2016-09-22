@@ -11,3 +11,12 @@ the command that would be executed would resemble `less -F /tmp/somefile.txt`.
 
 `bus`'s only dependency is `mktemp`.
 It uses that to generate the temporary file name.
+
+# Usage
+
+```
+bus [command] [args...]
+```
+
+That's all. If you supply a command, `bus` will invoke it;
+otherwise, `bus` will invoke `$PAGER` by default.
