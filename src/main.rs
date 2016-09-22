@@ -4,7 +4,7 @@ use std::fs::OpenOptions;
 use std::io::{stdin, Read, Write};
 
 fn error(message: &str) -> ! {
-    write!(std::io::stderr(), "{}", message);
+    write!(std::io::stderr(), "{}\n", message);
     std::process::exit(1);
 }
 
@@ -26,8 +26,9 @@ fn main() {
         pagercmd.arg(arg);
     }
 
-    let mut tmpfile = OpenOptions::new().write(true).open(get_tmp_file())
-        .unwrap_or_else(|_|error("couldn't open temp file"));
+    let tmpfilepath = get_tmp_file();
+    let mut tmpfile = OpenOptions::new().write(true).create(true).open(&tmpfilepath)
+        .unwrap_or_else(|e|error(&format!("couldn't open temp file: {} ({})", e, tmpfilepath)));
     let mut buffer: Vec<u8> = Vec::with_capacity(8192); // Arbitrary 8KiB.
 
     stdin().read_to_end(&mut buffer);
