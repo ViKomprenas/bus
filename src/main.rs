@@ -1,11 +1,11 @@
 use std::env::args;
-use std::process::Command;
+use std::process::{Command, exit};
 use std::fs::OpenOptions;
 use std::io::{stdin, Read, Write};
 
 fn error(message: &str) -> ! {
     write!(std::io::stderr(), "{}\n", message);
-    std::process::exit(1);
+    exit(1);
 }
 
 fn get_tmp_file() -> String {
@@ -35,5 +35,7 @@ fn main() {
     tmpfile.write_all(&buffer);
 
     pagercmd.arg(tmpfilepath);
-    pagercmd.status();
+    exit(pagercmd.status().map(|x|x.code())
+         .unwrap_or_else(|e|error(&format!("couldn't open pagercmd: {}", e)))
+         .unwrap_or_else(||error(&format!("couldn't open pagercmd"))));
 }
