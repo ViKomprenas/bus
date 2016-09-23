@@ -35,12 +35,8 @@ fn main() {
     let mut did_brace = false;
     let mut pagercmd = Command::new(cmdpath);
     for arg in args {
-        if arg == "{}" {
-            pagercmd.arg(&tmpfilepath);
-            did_brace = true;
-        } else {
-            pagercmd.arg(arg);
-        }
+        did_brace = did_brace || arg.contains("{}");
+        pagercmd.arg(arg.replace("{}", &tmpfilepath));
     }
     if !did_brace {
         pagercmd.arg(&tmpfilepath);
