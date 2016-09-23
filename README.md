@@ -29,12 +29,12 @@ if you like.
 # Examples
 
 ```
+# Use a command to generate markdown, then run it through pandoc to generate a pdf
+thingy --markdown | bus pandoc '{}' -sf markdown -t latex -o output.pdf
+
 # Search for a string in a file, emphasize it, and open the result in your pager
 grep string file | sed 's/string/STRING/g' | bus
 
 # Load the output of a command into vim for manual editing and saving
 thingy --generic-example | bus vim
-
-# Use a command to generate markdown, then run it through pandoc to generate a pdf
-thingy --markdown | bus pandoc '{}' -sf markdown -t latex -o output.pdf
 ```
