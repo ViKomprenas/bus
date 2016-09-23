@@ -20,7 +20,7 @@ bus [command] [args...]
 
 That's all. If you supply a command, `bus` will invoke it;
 otherwise, `bus` will invoke `$PAGER` by default.
-If one of the command's arguments is `{}`,
+If one of the command's arguments contains `{}`,
 `bus` will replace this with the file name;
 otherwise, the file name is the last argument.
 You can also use `{}` to force the file name to appear multiple times,
