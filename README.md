@@ -25,3 +25,16 @@ If one of the command's arguments is `{}`,
 otherwise, the file name is the last argument.
 You can also use `{}` to force the file name to appear multiple times,
 if you like.
+
+# Examples
+
+```
+# Search for a string in a file, emphasize it, and open the result in your pager
+grep string file | sed 's/string/STRING/g' | bus
+
+# Load the output of a command into vim for manual editing and saving
+thingy --generic-example | bus vim
+
+# Use a command to generate markdown, then run it through pandoc to generate a pdf
+thingy --markdown | bus pandoc '{}' -sf markdown -t latex -o output.pdf
+```
