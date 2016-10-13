@@ -9,7 +9,7 @@ use self::err::{TmpFileError, error};
 fn get_tmp_file() -> Result<String, TmpFileError> {
     let cmd = try!(Command::new("mktemp").output());
     if cmd.status.success() {
-        Ok(try!(String::from_utf8(cmd.stdout)))
+        Ok(try!(String::from_utf8(cmd.stdout)).replace("\n", ""))
     } else {
         Err(TmpFileError::MkTempFailed(cmd.status.code()))
     }
