@@ -58,7 +58,7 @@ fn main() {
             .unwrap_or_else(||error(&format!("couldn't open pagercmd")));
 
     // Sleep before deleting the file because sometimes it's important, e.g. my (viko) 's' script.
-    std::thread::sleep(std::time::Duration::from_millis(200));
+    std::thread::sleep(std::time::Duration::from_millis(500));
     if let Err(e) = remove_file(tmpfilepath) {
         error(&format!("couldn't delete file: {}", e));
     } else {
