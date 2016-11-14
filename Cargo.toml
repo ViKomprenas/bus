@@ -1,6 +1,6 @@
 [package]
 name = "bus"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["Viko <viko@vikomprenas.com>"]
 
 [dependencies]
