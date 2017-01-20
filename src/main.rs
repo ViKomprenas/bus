@@ -1,6 +1,6 @@
 use std::env::args;
 use std::process::{Command, exit};
-use std::fs::{OpenOptions, remove_file};
+use std::fs::OpenOptions;
 use std::io::{stdin, Read, Write};
 
 mod err;
@@ -56,12 +56,5 @@ fn main() {
     let c = pagercmd.status().map(|x|x.code())
             .unwrap_or_else(|e|error(&format!("couldn't open pagercmd: {}", e)))
             .unwrap_or_else(||error(&format!("couldn't open pagercmd")));
-
-    // Sleep before deleting the file because sometimes it's important, e.g. my (viko) 's' script.
-    std::thread::sleep(std::time::Duration::from_millis(500));
-    if let Err(e) = remove_file(tmpfilepath) {
-        error(&format!("couldn't delete file: {}", e));
-    } else {
-        exit(c);
-    }
+    exit(c);
 }
